@@ -1,7 +1,6 @@
 arxiv:
   categories:  # 文章类型
-    - cs.CV
-    - cs.CL
+    - cs.AI
     
 max_results: 10
 
