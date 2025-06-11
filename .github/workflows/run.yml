@@ -57,14 +57,14 @@ jobs:
           fi
         done
 
-    - name: Send report
-      run: |
-        chmod +x send_report.sh
-        ./send_report.sh
-      env:
-        EMAIL_FROM: ${{ secrets.EMAIL_USERNAME }}
-        EMAIL_TO: ${{ secrets.EMAIL_TO }}
-        EMAIL_SMTP: ${{ secrets.EMAIL_SMTP }}
-        EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+    # - name: Send report
+    #   run: |
+    #     chmod +x send_report.sh
+    #     ./send_report.sh
+    #   env:
+    #     EMAIL_FROM: ${{ secrets.EMAIL_USERNAME }}
+    #     EMAIL_TO: ${{ secrets.EMAIL_TO }}
+    #     EMAIL_SMTP: ${{ secrets.EMAIL_SMTP }}
+    #     EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+    #     EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+    #     EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
