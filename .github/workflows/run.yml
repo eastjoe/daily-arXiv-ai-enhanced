@@ -2,7 +2,7 @@ name: arXiv-daily-ai-enhanced
 
 on:
   schedule:
-    - cron: "0 10 * * *"  # UTC 时间每天 02:00，即北京时间 10:00
+    - cron: "0 2 * * *"  # UTC 时间每天 02:00，即北京时间 10:00
   workflow_dispatch:
 
 jobs:
