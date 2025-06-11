@@ -2,7 +2,7 @@ name: arXiv-daily-ai-enhanced
 
 on:
   schedule:
-    - cron: "30 16 * * *"  # UTC 时间，每天北京时间 00:30 运行
+    - cron: "0 10 * * *"  # UTC 时间每天 02:00，即北京时间 10:00
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
         export MODEL_NAME="${{ vars.MODEL_NAME }}"
         bash run.sh
 
-    - name: commit
+    - name: Commit changes
       run: |
         git config --global user.email "${{ vars.EMAIL }}"
         git config --global user.name "${{ vars.NAME }}"
@@ -57,17 +57,14 @@ jobs:
           fi
         done
 
-    - name: Send email with report
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: ${{ secrets.EMAIL_SMTP }}
-        server_port: ${{ secrets.EMAIL_PORT }}
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "📄 每日 arXiv 报告"
-        to: ${{ secrets.EMAIL_TO }}
-        from: ${{ secrets.EMAIL_USERNAME }}
-        content_type: text/plain
-        body: |
-          你好，这是今天的 arXiv 报告，请查收附件。
-        attachments: output.md
+    - name: Send report
+      run: |
+        chmod +x send_report.sh
+        ./send_report.sh
+      env:
+        EMAIL_FROM: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        EMAIL_SMTP: ${{ secrets.EMAIL_SMTP }}
+        EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
