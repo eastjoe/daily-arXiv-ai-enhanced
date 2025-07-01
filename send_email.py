@@ -25,12 +25,16 @@ def send_email_with_attachment(file_path, recipient_email):
     message = MIMEMultipart()
     message['From'] = Header(f"Daily arXiv Report <{sender}>", 'utf-8')
     message['To'] = Header(f"Recipient <{recipient_email}>", 'utf-8')
-    today_str = date.today().strftime("%Y-%m-%d")
-    subject = f'ArXiv Daily Summary - {today_str}'
+    
+    # --- 【修改部分】更新邮件标题和正文 ---
+    today_str_cn = date.today().strftime("%Y年%m月%d日")
+    subject = f'【{today_str_cn}】的ArXiv报告'
     message['Subject'] = Header(subject, 'utf-8')
 
     # 邮件正文
-    message.attach(MIMEText('你好，\n\n附件中是今日的 ArXiv 论文摘要，请查收。\n\n祝好！', 'plain', 'utf-8'))
+    body_content = f"你好，\n\n今日 {today_str_cn} 的内容已生成。\n\n附件中是今日的 ArXiv 论文摘要，请查收。\n\n祝好！"
+    message.attach(MIMEText(body_content, 'plain', 'utf-8'))
+    # --- 修改结束 ---
 
     # --- 读取并添加附件 ---
     try:
