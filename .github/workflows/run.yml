@@ -43,8 +43,8 @@ jobs:
       run: |
         source .venv/bin/activate
         # 自动查找最新生成的 markdown 文件
-        # 这个项目会将文件生成在 _posts 目录下
-        LATEST_MD_FILE=$(find _posts -type f -name "*.md" -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)
+        # 这个项目会将文件生成在 data 目录下
+        LATEST_MD_FILE=$(find data -type f -name "*.md" -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)
         
         if [ -z "$LATEST_MD_FILE" ]; then
           echo "No markdown file found in _posts. Skipping email."
