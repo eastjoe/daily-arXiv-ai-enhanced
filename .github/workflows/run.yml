@@ -29,6 +29,36 @@ jobs:
         export CATEGORIES="${{ vars.CATEGORIES }}"
         export MODEL_NAME="${{ vars.MODEL_NAME }}"
         bash run.sh
+
+    # ==================== 新增的步骤 ====================
+    - name: Send email
+      # 仅在前面的步骤成功时执行
+      if: success()
+      # 设置发送邮件脚本所需的环境变量
+      env:
+        MAIL_HOST: ${{ secrets.MAIL_HOST }}
+        MAIL_USER: ${{ secrets.MAIL_USER }}
+        MAIL_PASS: ${{ secrets.MAIL_PASS }}
+        RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+      run: |
+        source .venv/bin/activate
+        # 自动查找最新生成的 markdown 文件
+        # 这个项目会将文件生成在 _posts 目录下
+        LATEST_MD_FILE=$(find _posts -type f -name "*.md" -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)
+        
+        if [ -z "$LATEST_MD_FILE" ]; then
+          echo "No markdown file found in _posts. Skipping email."
+          exit 0
+        fi
+        
+        echo "Found latest markdown file: $LATEST_MD_FILE"
+        # 将文件路径导出为环境变量，供 python 脚本使用
+        export MD_FILE_PATH="$LATEST_MD_FILE"
+        
+        # 执行发送邮件的脚本
+        python send_email.py
+    # ======================================================
+
     - name: commit
       run: |
         git config --global user.email "${{ vars.EMAIL }}"
